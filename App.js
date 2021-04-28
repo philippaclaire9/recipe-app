@@ -8,40 +8,24 @@ import {
   TouchableHighlight,
   View,
 } from 'react-native';
-import { searchRecipe } from './api';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import RecipeSearch from './components/RecipeSearch';
+import SingleRecipe from './components/SingleRecipe';
+
+const Stack = createStackNavigator();
+
 const App = () => {
-  const [text, onChangeText] = useState('write here');
-  const [recipes, setRecipes] = useState([]);
-  const onPress = () => {
-    //console.log('pressed!');
-    searchRecipe(text).then((receivedRecipes) => {
-      console.log(receivedRecipes);
-      setRecipes(receivedRecipes);
-      //console.log(recipes);
-    });
-  };
   return (
-    <View style={styles.container}>
-      <Text>Welcooooome</Text>
-      <TextInput
-        style={styles.input}
-        value={text}
-        onChangeText={onChangeText}
-      />
-      <TouchableHighlight onPress={onPress}>
-        <View style={styles.button}>
-          <Text>Press Here</Text>
-        </View>
-      </TouchableHighlight>
-      {/* {recipes ? (
-        recipes.forEach((recipe) => {
-          <Text>{recipe.title}</Text>;
-        })
-      ) : (
-        <Text>Search for recipes</Text>
-      )} */}
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="Search recipes"
+          component={RecipeSearch}
+        ></Stack.Screen>
+        <Stack.Screen name="Recipe" component={SingleRecipe}></Stack.Screen>
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
 const styles = StyleSheet.create({
@@ -59,6 +43,9 @@ const styles = StyleSheet.create({
   button: {
     alignItems: 'center',
     backgroundColor: '#DDDDDD',
+    padding: 10,
+  },
+  listItem: {
     padding: 10,
   },
 });
