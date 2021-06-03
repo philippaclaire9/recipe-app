@@ -26,7 +26,7 @@ const SingleRecipe = ({ navigation, route }) => {
         source={{
           uri: `https://spoonacular.com/recipeImages/${image}`,
         }}
-        alt={'mushroom risotto'}
+        alt={title}
       />
       <Text>Ready in {readyInMinutes} minutes </Text>
       <Text>Serves {servings}</Text>

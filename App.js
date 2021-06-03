@@ -1,31 +1,45 @@
-import { StatusBar } from 'expo-status-bar';
-
 import React, { useState } from 'react';
-import {
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableHighlight,
-  View,
-} from 'react-native';
+import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import RecipeSearch from './components/RecipeSearch';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import SingleRecipe from './components/SingleRecipe';
+import { RecipeSearch, SBKeywordStackScreen } from './components/RecipeSearch';
+import SearchByIngredients from './components/SearchByIngredients';
+import { Home, HomeStackScreen } from './components/Home';
+import Nav from './components/Nav';
+//import SearchByKeyword from './components/RecipeSearch';
 
-const Stack = createStackNavigator();
+const Tab = createMaterialTopTabNavigator();
 
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
-          name="Search recipes"
-          component={RecipeSearch}
-        ></Stack.Screen>
-        <Stack.Screen name="Recipe" component={SingleRecipe}></Stack.Screen>
-      </Stack.Navigator>
+      <Tab.Navigator>
+        <Tab.Screen name="Home" component={Home} />
+        <Tab.Screen
+          name="Search by ingredients"
+          component={SearchByIngredients}
+        />
+        <Tab.Screen name="Search by keyword" component={SBKeywordStackScreen} />
+      </Tab.Navigator>
     </NavigationContainer>
+
+    // <NavigationContainer>
+    //   <Stack.Screen name="Nav" component={Nav}></Stack.Screen>
+    //   <Stack.Navigator initialRouteName="Home">
+    //     <Stack.Screen name="Home" component={Home}></Stack.Screen>
+    //     <Stack.Screen
+    //       name="Search by ingredients"
+    //       component={SearchByIngredients}
+    //     ></Stack.Screen>
+    //     <Stack.Screen
+    //       name="Search by keyword"
+    //       component={RecipeSearch}
+    //     ></Stack.Screen>
+    //     <Stack.Screen name="Recipe" component={SingleRecipe}></Stack.Screen>
+    //   </Stack.Navigator>
+    // </NavigationContainer>
   );
 };
 const styles = StyleSheet.create({

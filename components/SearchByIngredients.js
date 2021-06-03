@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
+import { createStackNavigator } from '@react-navigation/stack';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -8,32 +9,39 @@ import {
   TouchableHighlight,
   View,
 } from 'react-native';
-import { createStackNavigator } from '@react-navigation/stack';
 
 import { searchRecipe } from '../api';
 import SingleRecipe from './SingleRecipe';
 
-const SBKeywordStack = createStackNavigator();
+const SBIStack = createStackNavigator();
 
-export const SBKeywordStackScreen = () => {
+const SBIStackScreen = () => {
   return (
-    <SBKeywordStack.Navigator>
-      <SBKeywordStack.Screen
-        name="Search by keyword"
-        component={RecipeSearch}
-      />
-      <SBKeywordStack.Screen name="Recipe" component={SingleRecipe} />
-    </SBKeywordStack.Navigator>
+    <SBIStack.Navigator>
+      <SBIStack.Screen name="Recipe" component={SingleRecipe} />
+    </SBIStack.Navigator>
   );
 };
 
-export const RecipeSearch = ({ navigation }) => {
-  const [text, onChangeText] = useState('');
+const SearchByIngredients = ({ navigation }) => {
+  const [text, setChangeText] = useState('');
   const [recipes, setRecipes] = useState([]);
+  const [ingredients, setIngredients] = useState([]);
   const [isVegetarian, setVegetarian] = useState(false);
 
-  const onPress = () => {
-    searchRecipe(text).then((receivedRecipes) => {
+  const addIngredient = () => {
+    setIngredients((currIngredients) => {
+      console.log(text);
+      const newIngredients = [...currIngredients];
+      newIngredients.push(text);
+      return newIngredients;
+    });
+    setChangeText('');
+  };
+
+  const searchRecipes = () => {
+    const stringifiedIngredients = ingredients.join();
+    searchRecipe(stringifiedIngredients).then((receivedRecipes) => {
       setRecipes(receivedRecipes);
     });
   };
@@ -44,13 +52,22 @@ export const RecipeSearch = ({ navigation }) => {
       <TextInput
         style={styles.input}
         value={text}
-        onChangeText={onChangeText}
+        onChangeText={setChangeText}
         placeholder="Type ingredient"
       />
-
-      <TouchableHighlight onPress={onPress}>
+      <TouchableHighlight onPress={addIngredient}>
         <View style={styles.button}>
-          <Text>Press Here</Text>
+          <Text>Add ingredient</Text>
+        </View>
+      </TouchableHighlight>
+      <View>
+        {ingredients.map((ingredient, index) => {
+          return <Text key={index}>{ingredient}</Text>;
+        })}
+      </View>
+      <TouchableHighlight onPress={searchRecipes}>
+        <View style={styles.button}>
+          <Text>Search Recipes</Text>
         </View>
       </TouchableHighlight>
 
@@ -92,5 +109,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#DDDDDD',
     padding: 10,
+    margin: 10,
   },
 });
+
+export default SearchByIngredients;
