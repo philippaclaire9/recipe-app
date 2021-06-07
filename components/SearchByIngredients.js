@@ -1,5 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { createStackNavigator } from '@react-navigation/stack';
+//import { useContext } from 'react';
+//import { UserContext } from '../context/userContext';
 
 import React, { useState, useEffect } from 'react';
 import {
@@ -10,14 +12,19 @@ import {
   View,
 } from 'react-native';
 
-import { searchRecipe } from '../api';
+import { searchRecipeByIngredients } from '../api';
 import SingleRecipe from './SingleRecipe';
+import { RecipeSearch } from './RecipeSearch';
 
 const SBIStack = createStackNavigator();
 
 const SBIStackScreen = () => {
   return (
     <SBIStack.Navigator>
+      <SBIStack.Screen
+        name="Search by ingredients"
+        component={SearchByIngredients}
+      />
       <SBIStack.Screen name="Recipe" component={SingleRecipe} />
     </SBIStack.Navigator>
   );
@@ -28,10 +35,11 @@ const SearchByIngredients = ({ navigation }) => {
   const [recipes, setRecipes] = useState([]);
   const [ingredients, setIngredients] = useState([]);
   const [isVegetarian, setVegetarian] = useState(false);
+  // const { user } = useContext(UserContext);
+  //console.log(user);
 
   const addIngredient = () => {
     setIngredients((currIngredients) => {
-      console.log(text);
       const newIngredients = [...currIngredients];
       newIngredients.push(text);
       return newIngredients;
@@ -41,9 +49,11 @@ const SearchByIngredients = ({ navigation }) => {
 
   const searchRecipes = () => {
     const stringifiedIngredients = ingredients.join();
-    searchRecipe(stringifiedIngredients).then((receivedRecipes) => {
-      setRecipes(receivedRecipes);
-    });
+    searchRecipeByIngredients(stringifiedIngredients).then(
+      (receivedRecipes) => {
+        setRecipes(receivedRecipes);
+      }
+    );
   };
 
   return (
@@ -54,6 +64,7 @@ const SearchByIngredients = ({ navigation }) => {
         value={text}
         onChangeText={setChangeText}
         placeholder="Type ingredient"
+        required
       />
       <TouchableHighlight onPress={addIngredient}>
         <View style={styles.button}>

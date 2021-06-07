@@ -9,9 +9,10 @@ import {
   View,
 } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
-
+import RNPickerSelect from 'react-native-picker-select';
 import { searchRecipe } from '../api';
 import SingleRecipe from './SingleRecipe';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const SBKeywordStack = createStackNavigator();
 
@@ -28,14 +29,26 @@ export const SBKeywordStackScreen = () => {
 };
 
 export const RecipeSearch = ({ navigation }) => {
-  const [text, onChangeText] = useState('');
+  const [text, setText] = useState('');
   const [recipes, setRecipes] = useState([]);
-  const [isVegetarian, setVegetarian] = useState(false);
+  const [value, setValue] = useState('');
+  const [items, setItems] = useState([
+    { label: 'Vegetarian', value: 'vegetarian' },
+    { label: 'Pescetarian', value: 'pescetarian' },
+    { label: 'Lacto Vegetarian', value: 'Lacto vegetarian' },
+    { label: 'Ovo Vegetarian', value: 'ovo vegetarian' },
+    { label: 'Vegan', value: 'vegan' },
+  ]);
 
   const onPress = () => {
-    searchRecipe(text).then((receivedRecipes) => {
+    searchRecipe(text, value).then((receivedRecipes) => {
       setRecipes(receivedRecipes);
+      setText('');
     });
+  };
+
+  const handleSetValue = (value) => {
+    setValue(value);
   };
 
   return (
@@ -44,16 +57,28 @@ export const RecipeSearch = ({ navigation }) => {
       <TextInput
         style={styles.input}
         value={text}
-        onChangeText={onChangeText}
+        onChangeText={setText}
         placeholder="Type ingredient"
       />
+      {/* <View style={styles.test}> */}
+      <RNPickerSelect
+        items={items}
+        // open={open}
+        value={''}
+        fixAndroidTouchableBug={true}
+        placeholder={{ label: 'Select dietary requirements...', value: null }}
+        onValueChange={handleSetValue}
+        // setOpen={setOpen}
+
+        // setItems={handleSetValue}
+      />
+      {/* </View> */}
 
       <TouchableHighlight onPress={onPress}>
         <View style={styles.button}>
           <Text>Press Here</Text>
         </View>
       </TouchableHighlight>
-
       {recipes ? (
         recipes.map((recipe) => {
           return (
@@ -92,5 +117,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#DDDDDD',
     padding: 10,
+    margin: 10,
   },
+  test: { borderStyle: 'solid', borderColor: 'red', borderWidth: 5 },
 });
