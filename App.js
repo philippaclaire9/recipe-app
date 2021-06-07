@@ -11,7 +11,7 @@ import Nav from './components/Nav';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import { firebaseConfig } from './config';
-import UserContext from './context/userContext';
+import UserContext from './contexts/userContext';
 //import SearchByKeyword from './components/RecipeSearch';
 firebase.initializeApp(firebaseConfig);
 const Tab = createMaterialTopTabNavigator();
