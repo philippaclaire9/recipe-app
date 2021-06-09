@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
@@ -11,7 +11,7 @@ import Nav from './components/Nav';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import { firebaseConfig } from './config';
-import UserContext from './contexts/userContext';
+import { UserContext } from './contexts/userContext';
 //import SearchByKeyword from './components/RecipeSearch';
 firebase.initializeApp(firebaseConfig);
 const Tab = createMaterialTopTabNavigator();
@@ -22,21 +22,26 @@ const App = () => {
   return (
     <UserContext.Provider value={user}>
       <NavigationContainer>
-        <Tab.Navigator>
-          <Tab.Screen
-            name="Home"
-            component={Home}
-            initialParams={{ setUser }}
-          />
-          <Tab.Screen
-            name="Search by ingredients"
-            component={SearchByIngredients}
-          />
-          <Tab.Screen
-            name="Search by keyword"
-            component={SBKeywordStackScreen}
-          />
-        </Tab.Navigator>
+        {user ? (
+          <Tab.Navigator>
+            <Tab.Screen
+              name="Search by ingredients"
+              component={SearchByIngredients}
+            />
+            <Tab.Screen
+              name="Search by keyword"
+              component={SBKeywordStackScreen}
+            />
+          </Tab.Navigator>
+        ) : (
+          <Tab.Navigator>
+            <Tab.Screen
+              name="Home"
+              component={Home}
+              initialParams={{ setUser }}
+            />
+          </Tab.Navigator>
+        )}
       </NavigationContainer>
     </UserContext.Provider>
 

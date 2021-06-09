@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { createStackNavigator } from '@react-navigation/stack';
-//import { useContext } from 'react';
-//import { UserContext } from '../context/userContext';
+import { useContext } from 'react';
+import { UserContext } from '../contexts/userContext';
 
 import React, { useState, useEffect } from 'react';
 import {
@@ -35,8 +35,8 @@ const SearchByIngredients = ({ navigation }) => {
   const [recipes, setRecipes] = useState([]);
   const [ingredients, setIngredients] = useState([]);
   const [isVegetarian, setVegetarian] = useState(false);
-  // const { user } = useContext(UserContext);
-  //console.log(user);
+  const user = useContext(UserContext);
+  console.log(user);
 
   const addIngredient = () => {
     setIngredients((currIngredients) => {
