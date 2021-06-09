@@ -19,9 +19,9 @@ const UserRecipes = () => {
   }, []);
   return (
     <View>
-      {recipes.map((recipe) => {
+      {recipes.map((recipe, index) => {
         if (recipe.title) {
-          return <Text>{recipe.title}</Text>;
+          return <Text key={index}>{recipe.title}</Text>;
         }
       })}
     </View>
