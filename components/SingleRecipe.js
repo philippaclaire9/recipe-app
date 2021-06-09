@@ -1,15 +1,19 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   StyleSheet,
   Text,
   TextInput,
   TouchableHighlight,
+  TouchableOpacity,
   View,
   Image,
   Linking,
 } from 'react-native';
+import { UserContext } from '../contexts/userContext';
 
 const SingleRecipe = ({ navigation, route }) => {
+  const { db } = useContext(UserContext);
+
   const { image, readyInMinutes, servings, sourceUrl, title } =
     route.params.recipe;
 
@@ -19,11 +23,17 @@ const SingleRecipe = ({ navigation, route }) => {
     imageURL = `https://spoonacular.com/recipeImages/${image}`;
   }
 
-  // const [words, setWords] = useState(['apple', 'banana', 'egg']);
-  // const deleteWords = () => {
-  //   const newWords = words.slice(1);
-  //   setWords(newWords);
-  // };
+  const addRecipe = () => {
+    db.collection('user-recipes')
+      .add(route.params.recipe)
+      .then((docRef) => {
+        console.log(docRef);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{title}</Text>
@@ -37,6 +47,11 @@ const SingleRecipe = ({ navigation, route }) => {
       {readyInMinutes && <Text>Ready in {readyInMinutes} minutes </Text>}
       {servings && <Text>Serves {servings}</Text>}
       <Text onPress={() => Linking.openURL(sourceUrl)}>Recipe here</Text>
+      <TouchableHighlight style={styles.button} onPress={addRecipe}>
+        <View>
+          <Text>Add to 'My Recipes'</Text>
+        </View>
+      </TouchableHighlight>
     </View>
   );
 };
@@ -55,6 +70,11 @@ const styles = StyleSheet.create({
     height: 200,
     borderColor: 'blue',
     borderWidth: 3,
+  },
+  button: {
+    backgroundColor: 'blue',
+    padding: 10,
+    margin: 10,
   },
 });
 

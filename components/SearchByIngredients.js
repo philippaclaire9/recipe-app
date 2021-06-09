@@ -35,8 +35,7 @@ const SearchByIngredients = ({ navigation }) => {
   const [recipes, setRecipes] = useState([]);
   const [ingredients, setIngredients] = useState([]);
   const [isVegetarian, setVegetarian] = useState(false);
-  const user = useContext(UserContext);
-  console.log(user);
+  const { user } = useContext(UserContext);
 
   const addIngredient = () => {
     setIngredients((currIngredients) => {
@@ -58,6 +57,7 @@ const SearchByIngredients = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      <Text>Logged in as {user.username}</Text>
       <Text>Find yourself something to cook tonight</Text>
       <TextInput
         style={styles.input}

@@ -10,28 +10,36 @@ import { Home, HomeStackScreen } from './components/Home';
 import Nav from './components/Nav';
 import firebase from 'firebase/app';
 import 'firebase/auth';
+import 'firebase/firestore';
 import { firebaseConfig } from './config';
 import { UserContext } from './contexts/userContext';
+import UserRecipes from './components/UserRecipes';
 //import SearchByKeyword from './components/RecipeSearch';
 firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
 const Tab = createMaterialTopTabNavigator();
 
 const App = () => {
-  const [user, setUser] = useState('');
-
+  const [user, setUser] = useState({});
+  console.log(user);
+  //UserContext bit of a misnomer- decided later on to use context
+  //to distribute firebase across the proj too but haven't changed
+  //the name of the context
   return (
-    <UserContext.Provider value={user}>
+    <UserContext.Provider value={{ user, firebase, db }}>
       <NavigationContainer>
-        {user ? (
+        {user.userId ? (
           <Tab.Navigator>
             <Tab.Screen
-              name="Search by ingredients"
+              name="Search by Ingredients"
               component={SearchByIngredients}
             />
             <Tab.Screen
-              name="Search by keyword"
+              name="Search by Keyword"
               component={SBKeywordStackScreen}
             />
+            <Tab.Screen name="My Recipes" component={UserRecipes} />
           </Tab.Navigator>
         ) : (
           <Tab.Navigator>

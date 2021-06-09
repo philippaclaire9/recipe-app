@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   View,
   Text,
@@ -8,8 +8,9 @@ import {
 } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import firebase from 'firebase';
-import 'firebase/auth';
+// import firebase from 'firebase';
+// import 'firebase/auth';
+import { UserContext } from '../contexts/userContext';
 const HomeStack = createStackNavigator();
 
 export const HomeStackScreen = () => {
@@ -22,6 +23,8 @@ export const HomeStackScreen = () => {
 export const Home = ({ route, navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('');
+  const { firebase } = useContext(UserContext);
 
   const onPress = () => {
     firebase
@@ -29,7 +32,9 @@ export const Home = ({ route, navigation }) => {
       .createUserWithEmailAndPassword(email, password)
       .then((userCredential) => {
         const userId = userCredential.user.uid;
-        route.params.setUser(userId);
+        route.params.setUser((currUser) => {
+          return { userId, username };
+        });
       })
       .catch((err) => {
         console.log(err.code, err.message);
@@ -39,6 +44,14 @@ export const Home = ({ route, navigation }) => {
   return (
     <View>
       <Text>Create an account</Text>
+      <Text>Username:</Text>
+      <TextInput
+        style={styles.input}
+        value={username}
+        placeholder={'Username'}
+        onChangeText={setUsername}
+      />
+
       <Text>Email:</Text>
       <TextInput
         style={styles.input}
