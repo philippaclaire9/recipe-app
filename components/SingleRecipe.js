@@ -12,7 +12,7 @@ import {
 import { UserContext } from '../contexts/userContext';
 
 const SingleRecipe = ({ navigation, route }) => {
-  const { db } = useContext(UserContext);
+  const { db, user } = useContext(UserContext);
 
   const { image, readyInMinutes, servings, sourceUrl, title } =
     route.params.recipe;
@@ -24,8 +24,9 @@ const SingleRecipe = ({ navigation, route }) => {
   }
 
   const addRecipe = () => {
+    const recipeWithId = { ...route.params.recipe, userId: user.userId };
     db.collection('user-recipes')
-      .add(route.params.recipe)
+      .add(recipeWithId)
       .then((docRef) => {
         console.log(docRef);
       })

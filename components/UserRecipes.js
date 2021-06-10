@@ -5,7 +5,7 @@ import { UserContext } from '../contexts/userContext';
 const UserRecipes = () => {
   const { db } = useContext(UserContext);
   const [recipes, setRecipes] = useState([]);
-  console.log(recipes);
+
   useEffect(() => {
     db.collection('user-recipes')
       .get()

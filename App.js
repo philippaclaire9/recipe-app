@@ -22,6 +22,7 @@ const Tab = createMaterialTopTabNavigator();
 
 const App = () => {
   const [user, setUser] = useState({});
+
   console.log(user);
   //UserContext bit of a misnomer- decided later on to use context
   //to distribute firebase across the proj too but haven't changed

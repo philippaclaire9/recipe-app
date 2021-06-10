@@ -11,6 +11,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 // import firebase from 'firebase';
 // import 'firebase/auth';
 import { UserContext } from '../contexts/userContext';
+import Login from './Login';
 const HomeStack = createStackNavigator();
 
 export const HomeStackScreen = () => {
@@ -74,6 +75,8 @@ export const Home = ({ route, navigation }) => {
           <Text>Submit</Text>
         </View>
       </TouchableHighlight>
+
+      <Login setUser={route.params.setUser} />
     </View>
   );
 };

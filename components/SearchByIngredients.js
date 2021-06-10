@@ -57,7 +57,7 @@ const SearchByIngredients = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text>Logged in as {user.username}</Text>
+      <Text>Logged in as {user.username || user.email}</Text>
       <Text>Find yourself something to cook tonight</Text>
       <TextInput
         style={styles.input}
