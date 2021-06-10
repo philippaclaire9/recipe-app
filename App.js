@@ -22,6 +22,7 @@ const Tab = createMaterialTopTabNavigator();
 
 const App = () => {
   const [user, setUser] = useState({});
+  const [hasAddedRecipe, setHasAddedRecipe] = useState(false);
 
   console.log(user);
   //UserContext bit of a misnomer- decided later on to use context
@@ -35,12 +36,18 @@ const App = () => {
             <Tab.Screen
               name="Search by Ingredients"
               component={SearchByIngredients}
+              initialParams={{ setHasAddedRecipe, hasAddedRecipe }}
             />
             <Tab.Screen
               name="Search by Keyword"
               component={SBKeywordStackScreen}
+              initialParams={{ setHasAddedRecipe }}
             />
-            <Tab.Screen name="My Recipes" component={UserRecipes} />
+            <Tab.Screen
+              name="My Recipes"
+              component={UserRecipes}
+              initialParams={{ hasAddedRecipe }}
+            />
           </Tab.Navigator>
         ) : (
           <Tab.Navigator>

@@ -22,13 +22,14 @@ const SingleRecipe = ({ navigation, route }) => {
   if (firstSection !== 'http') {
     imageURL = `https://spoonacular.com/recipeImages/${image}`;
   }
-
+  console.log(route.params, 'paraaaams');
   const addRecipe = () => {
     const recipeWithId = { ...route.params.recipe, userId: user.userId };
     db.collection('user-recipes')
-      .add(recipeWithId)
+      .doc(user.userId)
+      .set({ recipeWithId }, { merge: true })
       .then((docRef) => {
-        console.log(docRef);
+        //  route.params.hasAddedRecipe(true)
       })
       .catch((err) => {
         console.log(err);

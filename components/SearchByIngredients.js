@@ -30,11 +30,11 @@ const SBIStackScreen = () => {
   );
 };
 
-const SearchByIngredients = ({ navigation }) => {
+const SearchByIngredients = ({ navigation, route }) => {
   const [text, setChangeText] = useState('');
   const [recipes, setRecipes] = useState([]);
   const [ingredients, setIngredients] = useState([]);
-  const [isVegetarian, setVegetarian] = useState(false);
+
   const { user } = useContext(UserContext);
 
   const addIngredient = () => {
@@ -45,6 +45,7 @@ const SearchByIngredients = ({ navigation }) => {
     });
     setChangeText('');
   };
+  console.log(route.params);
 
   const searchRecipes = () => {
     const stringifiedIngredients = ingredients.join();
@@ -87,7 +88,12 @@ const SearchByIngredients = ({ navigation }) => {
           return (
             <TouchableHighlight
               style={styles.listItem}
-              onPress={() => navigation.navigate('Recipe', { recipe })}
+              onPress={() =>
+                navigation.navigate('Recipe', {
+                  recipe,
+                  hasAddedRecipe: route.params.hasAddedRecipe,
+                })
+              }
               key={recipe.id}
             >
               <View>
